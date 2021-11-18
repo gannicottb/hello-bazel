@@ -1,6 +1,6 @@
 # WORKSPACE
 
-rules_scala_version = "17791a18aa966cdf2babb004822e6c70a7decc76"
+rules_scala_version = "17791a18aa966cdf2babb004822e6c70a7decc76" # latest commit on master as of Nov 18
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -14,7 +14,7 @@ http_archive(
 
 http_archive(
     name = "io_bazel_rules_scala",
-   # sha256 = "76e1abb8a54f61ada974e6e9af689c59fd9f0518b49be6be7a631ce9fa45f236",
+   # sha256 = "76e1abb8a54f61ada974e6e9af689c59fd9f0518b49be6be7a631ce9fa45f236", # commented because I don't know what the sha of the file is
     strip_prefix = "rules_scala-%s" % rules_scala_version,
     type = "zip",
     url = "https://github.com/bazelbuild/rules_scala/archive/%s.zip" % rules_scala_version,
