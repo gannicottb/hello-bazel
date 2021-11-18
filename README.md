@@ -6,7 +6,10 @@ Learn about how Bazel works, specifically for building Scala apps.
 Install bazelisk.
 
 `bazelisk build :App`
+
 `bazel-bin/App`
+
+Should print "Hello, Bazel!"
 
 # Approach
 
