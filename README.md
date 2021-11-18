@@ -70,3 +70,17 @@ Error in pack_sources: in call to pack_sources(), parameter 'output_jar' is depr
 In theory, adding `--incompatible_java_common_parameters=false` to the build call should allow me to get past this as well. But that flag isn't listed in the [Bazel docs](https://docs.bazel.build/versions/main/command-line-reference.html#build) and besides, all it does it is take us back to the gcc error, somehow.
 
 `bazel build --incompatible_java_common_parameters=false :App`
+
+Hmm maybe I'm supposed to use bazelisk instead of bazel?
+
+`bazelisk build :App`
+
+Nah, same result.
+
+[This issue specifically talks about the output_jar problem](https://github.com/bazelbuild/bazel/issues/12373)
+[Allegedly rules_scala is up to date with it](https://github.com/bazelbuild/rules_scala/pull/1314)
+
+Wait, success.
+
+.bazelversion set to 6.0.0-pre.20211101.2, and using rules_scala_version = "17791a18aa966cdf2babb004822e6c70a7decc76", commenting out the sha
+
