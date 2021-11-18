@@ -2,6 +2,12 @@
 
 Learn about how Bazel works, specifically for building Scala apps.
 
+# Demo
+Install bazelisk.
+
+`bazelisk build :App`
+`bazel-bin/App`
+
 # Approach
 
 Build a tiny app and get Bazel working with it.
