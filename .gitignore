@@ -1,2 +1,7 @@
 .vscode
 .metals
+.blaze
+.idea
+.bsp
+target/*
+project/target/*

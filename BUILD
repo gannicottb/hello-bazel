@@ -4,5 +4,5 @@ scala_binary(
     deps = [
         "//bazeltest"
     ],
-    main_class = "Main"
+    main_class = "bazeltest.src.main.scala.bazeltest.Main"
 )
