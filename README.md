@@ -9,7 +9,7 @@ Install bazelisk.
 
 `bazel-bin/App`
 
-Should print "Hello, Bazel!"
+To update dependencies, make changes to dependencies.yaml then run `scripts/update_dependencies.sh`
 
 # Approach
 
