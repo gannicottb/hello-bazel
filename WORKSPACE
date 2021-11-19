@@ -23,11 +23,14 @@ http_archive(
 # Stores Scala version and other configuration
 # 2.12 is a default version, other versions can be use by passing them explicitly:
 # scala_config(scala_version = "2.11.12")
+scala_version = "2.12.15" #"2.13.6"# "2.11.8"
 load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
-scala_config("2.11.8")
+scala_config(scala_version = scala_version)
+
+load("@io_bazel_rules_scala//scala:scala_cross_version.bzl", "extract_major_version")
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
-scala_repositories()
+scala_repositories(fetch_sources = True)
 
 load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
 rules_proto_dependencies()
