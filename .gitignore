@@ -5,3 +5,4 @@
 .bsp
 target/*
 project/target/*
+3rdparty

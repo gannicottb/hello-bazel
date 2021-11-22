@@ -11,7 +11,7 @@ import scala.concurrent.duration._
 object Main extends IOApp.Simple {
 
     case class Bazel(
-                    msg: String
+                      msg: String
                     )
 
   def sleepPrint(word: String, name: String, rand: Random[IO]): IO[Unit] =
