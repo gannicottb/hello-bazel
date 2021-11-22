@@ -19,9 +19,18 @@ Install bazelisk.
 
 `bazel-bin/App`
 
+OR (recommended)
+
+[Install bazel plugin for IJ.](https://plugins.jetbrains.com/plugin/8609-bazel)
+
+
 To update dependencies, make changes to dependencies.yaml then run `scripts/update_dependencies.sh`
 
 ALSO update your deps in the relevant BUILD file!
+
+You can then set up a run configuration like:
+* target expression = //:App
+* Bazel command = run
 
 # Approach
 
