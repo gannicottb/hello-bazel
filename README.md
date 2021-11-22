@@ -1,6 +1,8 @@
 # Motivation
 
 Learn about how Bazel works, specifically for building Scala apps.
+[Bazel IJ plugin docs](https://ij.bazel.build/)
+[scala_binary rules docs (scalac opts)](https://github.com/bazelbuild/rules_scala/blob/master/docs/scala_binary.md)
 
 # Demo
 Install bazelisk.
@@ -10,6 +12,8 @@ Install bazelisk.
 `bazel-bin/App`
 
 To update dependencies, make changes to dependencies.yaml then run `scripts/update_dependencies.sh`
+
+ALSO update your deps in the relevant BUILD file!
 
 # Approach
 

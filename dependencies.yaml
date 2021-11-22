@@ -115,14 +115,22 @@ dependencies:
 
   org.typelevel:
     cats:
+      exports:
+        - "org.typelevel:cats-kernel"
       lang: scala
-      modules: [ "free", "kernel", "macros" ]
-      version: "1.1.0"
+      modules: [ "effect", "effect-kernel", "effect-std" ]
+      version: "3.2.9"
     cats-core:
       exports:
         - "org.typelevel:cats-kernel"
       lang: scala
-      version: "1.1.0"
+      version: "2.6.1"
+    cats-free:
+      lang: scala
+      version: "2.6.1"
+    cats-kernel:
+      lang: scala
+      version: "2.6.1"
     macro-compat:
       lang: scala
     paiges-core:
