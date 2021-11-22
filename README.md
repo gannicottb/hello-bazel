@@ -7,9 +7,10 @@ Learn about how Bazel works, specifically for building Scala apps.
 
 # TODO
 * Find equivalent of addCompilerPlugin
-  * (Reverse engineer this)[https://github.com/psilospore/rules_scala_bloopy/blob/8af7a65c482b0984a745e200e56a5dbccdf2c6ff/tests/plugins/kind-projector/test]
-  * (Reverse engineer this (Scala 3))[https://github.com/timothyklim/rules_scala3/tree/5bb7cb131a457dfe1c2224fdb1e5195f27bf7a74/tests/plugins/kind-projector]
+  * [Reverse engineer this](https://github.com/psilospore/rules_scala_bloopy/blob/8af7a65c482b0984a745e200e56a5dbccdf2c6ff/tests/plugins/kind-projector/test)
+  * [Reverse engineer this (Scala 3)](https://github.com/timothyklim/rules_scala3/tree/5bb7cb131a457dfe1c2224fdb1e5195f27bf7a74/tests/plugins/kind-projector)
 * Scala 3
+* scalafmt
 
 # Demo
 Install bazelisk.
