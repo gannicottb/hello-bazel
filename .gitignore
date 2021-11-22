@@ -6,3 +6,4 @@
 target/*
 project/target/*
 3rdparty
+bazel-*
