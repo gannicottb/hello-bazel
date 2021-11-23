@@ -3,14 +3,17 @@
 Learn about how Bazel works, specifically for building Scala apps.
 [Bazel IJ plugin docs](https://ij.bazel.build/)
 [scala_binary rules docs (scalac opts)](https://github.com/bazelbuild/rules_scala/blob/master/docs/scala_binary.md)
-
+[example sbt-to-bazel repo](https://github.com/stripe-archive/sbt-bazel)
 
 # TODO
 * Find equivalent of addCompilerPlugin
+  * [Reimplement via toolchain](https://github.com/bazelbuild/rules_scala/blob/master/docs/scala_toolchain.md)
   * [Reverse engineer this](https://github.com/psilospore/rules_scala_bloopy/blob/8af7a65c482b0984a745e200e56a5dbccdf2c6ff/tests/plugins/kind-projector/test)
   * [Reverse engineer this (Scala 3)](https://github.com/timothyklim/rules_scala3/tree/5bb7cb131a457dfe1c2224fdb1e5195f27bf7a74/tests/plugins/kind-projector)
 * Scala 3
 * scalafmt
+* What is the difference between scala_library, scala_binary, scala_toolchain?
+* Share scala version between bazel-deps and WORKSPACE
 
 # Demo
 Install bazelisk.
@@ -32,7 +35,7 @@ You can then set up a run configuration like:
 * target expression = //:App
 * Bazel command = run
 
-# Approach
+# Initial Approach
 
 Build a tiny app and get Bazel working with it.
 
@@ -114,3 +117,18 @@ Wait, success.
 
 .bazelversion set to 6.0.0-pre.20211101.2, and using rules_scala_version = "17791a18aa966cdf2babb004822e6c70a7decc76", commenting out the sha
 
+# Add compiler plugin
+
+[Scala-lang docs](https://docs.scala-lang.org/overviews/plugins/index.html)
+> addCompilerPlugin performs multiple actions. It adds the JAR to the classpath (the compilation classpath only, not the runtime classpath) via libraryDependencies, and it also customizes scalacOptions to enable the plugin using -Xplugin.
+
+So first step is to download the jar as normal. Going with better-monadic-for (which I think is unneeded in scala 3, but will work as an example)
+
+Added to dependencies.yaml, and then loaded to a specific target via 
+```
+ plugins = [
+        "@third_party//3rdparty/jvm/com/olegpy:better_monadic_for",
+    ],
+```
+
+Which works, but IDEA of course doesn't know about it and will flag the code as invalid.

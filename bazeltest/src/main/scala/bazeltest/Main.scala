@@ -10,7 +10,11 @@ import scala.concurrent.duration._
 
 object Main extends IOApp.Simple {
 
-    case class Bazel(
+  // This section compiles because kind-projector is available
+  def baz[T[_, _]] = ()
+  baz[Tuple3[Int, *, *]]
+
+  case class Bazel(
                       msg: String
                     )
 
@@ -34,6 +38,8 @@ object Main extends IOApp.Simple {
 
       _ <- IO.sleep(5.seconds)
       _ <- english.cancel >> french.cancel >> spanish.cancel
+      (x, y) <- IO.pure((1, 2)) // This requires better-monadic-for
+      _ <- IO.println(s"$x and $y")
       _ <- IO.println("demo complete")
     } yield ()
 }
