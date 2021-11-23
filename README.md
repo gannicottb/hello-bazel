@@ -7,11 +7,11 @@ Learn about how Bazel works, specifically for building Scala apps.
 
 # TODO
 * Find equivalent of addCompilerPlugin
-  * [Reimplement via toolchain](https://github.com/bazelbuild/rules_scala/blob/master/docs/scala_toolchain.md)
-  * [Reverse engineer this](https://github.com/psilospore/rules_scala_bloopy/blob/8af7a65c482b0984a745e200e56a5dbccdf2c6ff/tests/plugins/kind-projector/test)
-  * [Reverse engineer this (Scala 3)](https://github.com/timothyklim/rules_scala3/tree/5bb7cb131a457dfe1c2224fdb1e5195f27bf7a74/tests/plugins/kind-projector)
+  * Solved for a single target via [undocumented plugins attribute](https://github.com/bazelbuild/rules_scala/blob/master/test/src/main/scala/scalarules/test/compiler_plugin/BUILD.bazel)
+  * In order to apply project wide, must [Reimplement via toolchain](https://github.com/bazelbuild/rules_scala/blob/master/docs/scala_toolchain.md)
 * Scala 3
 * scalafmt
+  * Done via Intellij plugin and appropriate .scalafmt.conf. Not really a Bazel issue.
 * What is the difference between scala_library, scala_binary, scala_toolchain?
 * Share scala version between bazel-deps and WORKSPACE
 
@@ -130,5 +130,6 @@ Added to dependencies.yaml, and then loaded to a specific target via
         "@third_party//3rdparty/jvm/com/olegpy:better_monadic_for",
     ],
 ```
+NOTE: this `plugins` key is undocumented!
 
 Which works, but IDEA of course doesn't know about it and will flag the code as invalid.

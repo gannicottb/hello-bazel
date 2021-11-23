@@ -15,15 +15,15 @@ object Main extends IOApp.Simple {
   baz[Tuple3[Int, *, *]]
 
   case class Bazel(
-                      msg: String
-                    )
+      msg: String
+  )
 
   def sleepPrint(word: String, name: String, rand: Random[IO]): IO[Unit] =
     for {
       delay <- rand.betweenInt(200, 700)
-      _     <- IO.sleep(delay.millis)
+      _ <- IO.sleep(delay.millis)
       json = Bazel(s"$word, $name").asJson
-      _     <- IO.println(json.noSpaces)
+      _ <- IO.println(json.noSpaces)
     } yield ()
 
   val run: IO[Unit] =
@@ -33,7 +33,7 @@ object Main extends IOApp.Simple {
       name <- IO.pure("Daniel")
 
       english <- sleepPrint("Hello", name, rand).foreverM.start
-      french  <- sleepPrint("Bonjour", name, rand).foreverM.start
+      french <- sleepPrint("Bonjour", name, rand).foreverM.start
       spanish <- sleepPrint("Hola", name, rand).foreverM.start
 
       _ <- IO.sleep(5.seconds)
