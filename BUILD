@@ -12,3 +12,11 @@ scala_binary(
         "//bazeltest",
     ],
 )
+
+scala_binary(
+    name = "HelloServer",
+    main_class = "helloserver.src.main.scala.com.ciphertrace.Main",
+    deps = [
+        "//helloserver",
+    ],
+)

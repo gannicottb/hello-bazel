@@ -18,8 +18,9 @@ dependencies:
       version: "1.2.3"
 
   co.fs2:
-    fs2-core:
+    fs2:
       lang: scala
+      modules: [ "core", "io" ]
       version: "3.2.0"
 
   com.chuusai:
@@ -86,7 +87,8 @@ dependencies:
   org.http4s:
     http4s:
       lang: scala
-      modules: [ "circe", "client", "core", "dsl", "ember-client", "ember-server", "server" ]
+      modules: [ "circe", "client", "core", "dsl", "ember-client", "ember-server", "jawn",
+        "server" ]
       version: "0.23.6"
 
   org.scala-lang.modules:
@@ -146,6 +148,9 @@ dependencies:
     kind-projector_2.13.7:
       lang: scala/unmangled
       version: "0.13.2"
+    literally:
+      lang: scala
+      version: "1.0.2"
     paiges-core:
       lang: scala
       version: "0.4.2"
