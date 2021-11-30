@@ -6,8 +6,7 @@ scala_binary(
     name = "App",
     main_class = "bazeltest.src.main.scala.bazeltest.Main",
     scalacopts = [
-        "-language:higherKinds",
-        "-Ypartial-unification",
+        "-language:higherKinds"
     ],
     deps = [
         "//bazeltest",

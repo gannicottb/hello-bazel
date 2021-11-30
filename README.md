@@ -6,14 +6,21 @@ Learn about how Bazel works, specifically for building Scala apps.
 [example sbt-to-bazel repo](https://github.com/stripe-archive/sbt-bazel)
 
 # TODO
-* Find equivalent of addCompilerPlugin
-  * Solved for a single target via [undocumented plugins attribute](https://github.com/bazelbuild/rules_scala/blob/master/test/src/main/scala/scalarules/test/compiler_plugin/BUILD.bazel)
-  * In order to apply project wide, must [Reimplement via toolchain](https://github.com/bazelbuild/rules_scala/blob/master/docs/scala_toolchain.md)
+* Share scala version between bazel-deps and WORKSPACE
 * Scala 3
+* Find equivalent of addCompilerPlugin
+  * In order to apply project wide, must [Reimplement via toolchain](https://github.com/bazelbuild/rules_scala/blob/master/docs/scala_toolchain.md)
+  
+
+# TODONE
+* What is the difference between scala_library, scala_binary, scala_toolchain?
+  * scala_toolchain defines global build configuration for all Scala targets
+  * scala_library defines how to generate a .jar
+  * scala_binary outputs an executable script that runs a .jar - you have to provide a main_class
 * scalafmt
   * Done via Intellij plugin and appropriate .scalafmt.conf. Not really a Bazel issue.
-* What is the difference between scala_library, scala_binary, scala_toolchain?
-* Share scala version between bazel-deps and WORKSPACE
+* Find equivalent of addCompilerPlugin
+  * Solved for a single target via [undocumented plugins attribute](https://github.com/bazelbuild/rules_scala/blob/master/test/src/main/scala/scalarules/test/compiler_plugin/BUILD.bazel)
 
 # Demo
 Install bazelisk.
