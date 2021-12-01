@@ -8,7 +8,8 @@ options:
       type: "default"
       url: https://oss.sonatype.org/content/repositories/public/
   strictVisibility: true
-  transitivity: runtime_deps
+  thirdPartyDirectory: ""
+  transitivity: exports
   versionConflictPolicy: highest
 
 dependencies:
@@ -26,11 +27,6 @@ dependencies:
   com.chuusai:
     shapeless:
       lang: scala
-
-  com.comcast:
-    ip4s-core:
-      lang: scala
-      version: "3.0.4"
 
   com.fasterxml.jackson.core:
     jackson:
@@ -148,9 +144,6 @@ dependencies:
     kind-projector_2.13.7:
       lang: scala/unmangled
       version: "0.13.2"
-    literally:
-      lang: scala
-      version: "1.0.2"
     paiges-core:
       lang: scala
       version: "0.4.2"

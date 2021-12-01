@@ -6,6 +6,13 @@ Learn about how Bazel works, specifically for building Scala apps.
 [example sbt-to-bazel repo](https://github.com/stripe-archive/sbt-bazel)
 
 # TODO
+* Build Docker image via Bazel rules
+* Understand transitivity as it pertains to our deps
+  * The default transitivity setting in dependencies.yaml led to (imo) excessive tracking down of transitive deps
+  * For example, if you needs cats-effect, you end up needing cats-core, cats-kernel, cats-kernel-effect, cats-effect-std, etc,
+  * all explicitly declared in dependencies and asked for in the app that wanted cats-effect. This might have correctness
+  * benefits but it's a hard sell. Basically, bazel-deps would find the extra things we need, but then it's impossible to 
+  * make them available on the classpath without promoting them to an explicit include in two files (dependencies.yaml and BUILD)
 * Share scala version between bazel-deps and WORKSPACE
 * Scala 3
 * Find equivalent of addCompilerPlugin
@@ -15,7 +22,7 @@ Learn about how Bazel works, specifically for building Scala apps.
 # TODONE
 * What is the difference between scala_library, scala_binary, scala_toolchain?
   * scala_toolchain defines global build configuration for all Scala targets
-  * scala_library defines how to generate a .jar
+  * scala_library defines a module
   * scala_binary outputs an executable script that runs a .jar - you have to provide a main_class
 * scalafmt
   * Done via Intellij plugin and appropriate .scalafmt.conf. Not really a Bazel issue.
@@ -140,3 +147,9 @@ Added to dependencies.yaml, and then loaded to a specific target via
 NOTE: this `plugins` key is undocumented!
 
 Which works, but IDEA of course doesn't know about it and will flag the code as invalid.
+
+# Listing deps
+From https://docs.bazel.build/versions/main/build-ref.html#actual_and_declared_dependencies
+> What this means for BUILD file writers is that every rule must explicitly declare all of its actual direct dependencies to the build system, and no more. Failure to observe this principle causes undefined behavior: the build may fail, but worse, the build may depend on some prior operations, or upon transitive declared dependencies the target happens to have. The build tool attempts aggressively to check for missing dependencies and report errors, but it is not possible for this checking to be complete in all cases.
+
+> You need not (and should not) attempt to list everything indirectly imported, even if it is "needed" by A at execution time.
