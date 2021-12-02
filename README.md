@@ -158,19 +158,19 @@ Which works, but IDEA of course doesn't know about it and will flag the code as 
 
 # Listing deps
 
-The default transitivity setting in dependencies.yaml led to (imo) excessive tracking down of transitive deps
+The default transitivity setting (runtimeDeps) in dependencies.yaml led to (imo) excessive tracking down of transitive deps.
+
 For example, if you needs cats-effect, you end up needing cats-core, cats-kernel, cats-kernel-effect, cats-effect-std, etc, all explicitly declared in dependencies and asked for in the app that wanted cats-effect. 
-This might have correctness benefits but it's a hard sell. Basically, bazel-deps would find the extra things we need, but then it's impossible to make them available on the classpath without promoting them to an explicit include in two files (dependencies.yaml and BUILD)
+
+This might have correctness benefits but it's a hard sell. Basically, bazel-deps will find the extra things we need, but with `transitivity: runtimeDeps` then it's impossible to make them available on the classpath without promoting them to an explicit include in two files (dependencies.yaml and BUILD)
 
 From [bazel docs](https://docs.bazel.build/versions/main/build-ref.html#actual_and_declared_dependencies)
 > What this means for BUILD file writers is that every rule must explicitly declare all of its actual direct dependencies to the build system, and no more. Failure to observe this principle causes undefined behavior: the build may fail, but worse, the build may depend on some prior operations, or upon transitive declared dependencies the target happens to have. The build tool attempts aggressively to check for missing dependencies and report errors, but it is not possible for this checking to be complete in all cases.
-
 > You need not (and should not) attempt to list everything indirectly imported, even if it is "needed" by A at execution time.
 > Dependencies should be restricted to direct dependencies (dependencies needed by the sources listed in the rule). Do not list transitive dependencies.
-From [java_library docs](https://docs.bazel.build/versions/main/be/java.html)
-> List of labels; optional
 
-> Exported libraries.
+From [java_library docs](https://docs.bazel.build/versions/main/be/java.html)
+> `exports`: Exported libraries.
 > Listing rules here will make them available to parent rules, as if the parents explicitly depended on these rules. This is not true for regular (non-exported) deps.
 > Summary: a rule X can access the code in Y if there exists a dependency path between them that begins with a deps edge followed by zero or more exports edges. Let's see some examples to illustrate this.
 > Assume A depends on B and B depends on C. In this case C is a transitive dependency of A, so changing C's sources and rebuilding A will correctly rebuild everything. However A will not be able to use classes in C. To allow that, either A has to declare C in its deps, or B can make it easier for A (and anything that may depend on A) by declaring C in its (B's) exports attribute.
@@ -179,7 +179,7 @@ From [java_library docs](https://docs.bazel.build/versions/main/be/java.html)
 
 I'm assuming that the `exports` attribute in dependencies.yaml eventually boils down to something analogous to this.
 Ah, here it is. [scala_rules docs](https://github.com/bazelbuild/rules_scala/blob/master/docs/scala_library.md)
-> List of labels, optional
+> `exports`: List of labels, optional
 > List of targets to add to the dependencies of those that depend on this target. Similar to the `java_library` parameter of the same name. Use this sparingly as it weakens the precision of the build graph. These must be jvm targets (scala_library, java_library, java_import, etc...)
 
 Still not totally sure if there's a happy medium between
@@ -190,3 +190,5 @@ Ultimately the first option is far more ergonomic, but I think what it does is l
 We're basically using it as much as possible in the first option. Which is probably why everything just works :P
 At the same time, the docs for `runtime_deps` (as an attribute on scala_library) have this to say:
 > List of other libraries to put on the classpath only at runtime. This is rarely needed in Scala. These must be jvm targets (scala_library, java_library, java_import, etc...)
+
+Discussion on this subject perhaps ongoing here [in this issue](https://github.com/johnynek/bazel-deps/issues/301)
