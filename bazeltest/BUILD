@@ -7,6 +7,7 @@ scala_library(
         "@third_party//com/olegpy:better_monadic_for",
         "@third_party//org/typelevel:kind_projector_2_13_7",
     ],
+    unused_dependency_checker_mode = "error",
     visibility = ["//:__pkg__"],
     deps = [
         "@third_party//io/circe:circe_core",

@@ -1,0 +1,3 @@
+build --verbose_failures
+build --strategy=Scalac=worker
+build --experimental_strict_java_deps=error

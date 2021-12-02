@@ -21,10 +21,17 @@ http_archive(
     url = "https://github.com/bazelbuild/rules_scala/archive/%s.zip" % rules_scala_version,
 )
 
+http_archive(
+    name = "io_bazel_rules_docker",
+    sha256 = "4349f2b0b45c860dd2ffe18802e9f79183806af93ce5921fb12cbd6c07ab69a8",
+    strip_prefix = "rules_docker-0.21.0",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.21.0/rules_docker-v0.21.0.tar.gz"],
+)
+
 # Stores Scala version and other configuration
 # 2.12 is a default version, other versions can be use by passing them explicitly:
 # scala_config(scala_version = "2.11.12")
-scala_version = "2.13.7"  #"2.12.15" #"2.13.6"# "2.11.8"
+scala_version = "2.13.7"
 
 load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
 
@@ -45,6 +52,8 @@ load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
 
 scala_register_toolchains()
 
+# These rules link the bazel-deps directory to this project
+# use scripts/update_dependencies.sh whenever dependencies.yaml changes!
 load("//3rdparty:workspace.bzl", "maven_dependencies")
 
 maven_dependencies()
@@ -52,6 +61,20 @@ maven_dependencies()
 load("//3rdparty:target_file.bzl", "build_external_workspace")
 
 build_external_workspace(name = "third_party")
+
+load(
+    "@io_bazel_rules_docker//repositories:repositories.bzl",
+    container_repositories = "repositories",
+)
+
+container_repositories()
+
+load(
+    "@io_bazel_rules_docker//scala:image.bzl",
+    _scala_image_repos = "repositories",
+)
+
+_scala_image_repos()
 
 # optional: setup ScalaTest toolchain and dependencies
 # load("@io_bazel_rules_scala//testing:scalatest.bzl", "scalatest_repositories", "scalatest_toolchain")

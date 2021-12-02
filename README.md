@@ -4,22 +4,21 @@ Learn about how Bazel works, specifically for building Scala apps.
 [Bazel IJ plugin docs](https://ij.bazel.build/)
 [scala_binary rules docs (scalac opts)](https://github.com/bazelbuild/rules_scala/blob/master/docs/scala_binary.md)
 [example sbt-to-bazel repo](https://github.com/stripe-archive/sbt-bazel)
+[migrating to bazel](https://medium.com/wix-engineering/migrating-to-bazel-from-maven-or-gradle-5-crucial-questions-you-should-ask-yourself-f23ac6bca070)
 
 # TODO
-* Build Docker image via Bazel rules
-* Understand transitivity as it pertains to our deps
-  * The default transitivity setting in dependencies.yaml led to (imo) excessive tracking down of transitive deps
-  * For example, if you needs cats-effect, you end up needing cats-core, cats-kernel, cats-kernel-effect, cats-effect-std, etc,
-  * all explicitly declared in dependencies and asked for in the app that wanted cats-effect. This might have correctness
-  * benefits but it's a hard sell. Basically, bazel-deps would find the extra things we need, but then it's impossible to 
-  * make them available on the classpath without promoting them to an explicit include in two files (dependencies.yaml and BUILD)
+* Customize docker images (translate _some_ tweaks from existing Dockerfiles)
+* Push docker images to local repo/external repo
+* Determine the right approach for transitive dep declaration 
 * Share scala version between bazel-deps and WORKSPACE
 * Scala 3
 * Find equivalent of addCompilerPlugin
   * In order to apply project wide, must [Reimplement via toolchain](https://github.com/bazelbuild/rules_scala/blob/master/docs/scala_toolchain.md)
-  
+* Evaluate twitter/multiversion to allow for more flexible versioning [multiversion github](https://github.com/twitter/bazel-multiversion)
+  * We might not need this right away for clusterrisk, but we'd get into trouble when we tried to onboard the rest of the Scala apps
 
 # TODONE
+* Build Docker image via Bazel rules
 * What is the difference between scala_library, scala_binary, scala_toolchain?
   * scala_toolchain defines global build configuration for all Scala targets
   * scala_library defines a module
@@ -32,22 +31,36 @@ Learn about how Bazel works, specifically for building Scala apps.
 # Demo
 Install bazelisk.
 
-`bazelisk build :App`
+Run bazel-deps script to generate BUILD files for our dependencies: 
 
-`bazel-bin/App`
+`scripts/update_dependencies.sh`
+
+Build the :App target with Bazel: 
+
+`bazel build :App`
+
+Run the :App target with Bazel: 
+
+`bazel run :App`
+
+You can do the same with :HelloServer to see an http4s server in action.
+
+Package either target in a Docker image and then run with:
+
+`bazel run :AppImage` or `bazel run :HelloServerImage`
 
 OR (recommended)
 
 [Install bazel plugin for IJ.](https://plugins.jetbrains.com/plugin/8609-bazel)
 
-
-To update dependencies, make changes to dependencies.yaml then run `scripts/update_dependencies.sh`
-
-ALSO update your deps in the relevant BUILD file!
-
 You can then set up a run configuration like:
 * target expression = //:App
 * Bazel command = run
+
+# Updating dependencies
+To update dependencies, make changes to dependencies.yaml then run `scripts/update_dependencies.sh`
+
+ALSO update your deps in the relevant BUILD file!
 
 # Initial Approach
 
@@ -118,13 +131,8 @@ In theory, adding `--incompatible_java_common_parameters=false` to the build cal
 
 `bazel build --incompatible_java_common_parameters=false :App`
 
-Hmm maybe I'm supposed to use bazelisk instead of bazel?
-
-`bazelisk build :App`
-
-Nah, same result.
-
 [This issue specifically talks about the output_jar problem](https://github.com/bazelbuild/bazel/issues/12373)
+
 [Allegedly rules_scala is up to date with it](https://github.com/bazelbuild/rules_scala/pull/1314)
 
 Wait, success.
@@ -149,11 +157,16 @@ NOTE: this `plugins` key is undocumented!
 Which works, but IDEA of course doesn't know about it and will flag the code as invalid.
 
 # Listing deps
+
+The default transitivity setting in dependencies.yaml led to (imo) excessive tracking down of transitive deps
+For example, if you needs cats-effect, you end up needing cats-core, cats-kernel, cats-kernel-effect, cats-effect-std, etc, all explicitly declared in dependencies and asked for in the app that wanted cats-effect. 
+This might have correctness benefits but it's a hard sell. Basically, bazel-deps would find the extra things we need, but then it's impossible to make them available on the classpath without promoting them to an explicit include in two files (dependencies.yaml and BUILD)
+
 From [bazel docs](https://docs.bazel.build/versions/main/build-ref.html#actual_and_declared_dependencies)
 > What this means for BUILD file writers is that every rule must explicitly declare all of its actual direct dependencies to the build system, and no more. Failure to observe this principle causes undefined behavior: the build may fail, but worse, the build may depend on some prior operations, or upon transitive declared dependencies the target happens to have. The build tool attempts aggressively to check for missing dependencies and report errors, but it is not possible for this checking to be complete in all cases.
 
 > You need not (and should not) attempt to list everything indirectly imported, even if it is "needed" by A at execution time.
-
+> Dependencies should be restricted to direct dependencies (dependencies needed by the sources listed in the rule). Do not list transitive dependencies.
 From [java_library docs](https://docs.bazel.build/versions/main/be/java.html)
 > List of labels; optional
 
