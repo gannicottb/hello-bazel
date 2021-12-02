@@ -1,4 +1,4 @@
-# This is the project level BUILD file, which describes a single binary built from the bazeltest package.
+# This is the project level BUILD file, which describes each binary built from packages in this workspace
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_binary")
 

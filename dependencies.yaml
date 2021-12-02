@@ -83,8 +83,7 @@ dependencies:
   org.http4s:
     http4s:
       lang: scala
-      modules: [ "circe", "client", "core", "dsl", "ember-client", "ember-server", "jawn",
-        "server" ]
+      modules: [ "circe", "dsl", "ember-client", "ember-server" ]
       version: "0.23.6"
 
   org.scala-lang.modules:

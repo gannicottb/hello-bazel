@@ -12,6 +12,6 @@ scala_library(
         "@third_party//io/circe:circe_core",
         "@third_party//io/circe:circe_generic",
         "@third_party//org/typelevel:cats_core",
-        "@third_party//org/typelevel:cats_effect"
+        "@third_party//org/typelevel:cats_effect",
     ],
 )
