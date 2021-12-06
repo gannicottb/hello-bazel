@@ -37,17 +37,17 @@ Run bazel-deps script to generate BUILD files for our dependencies:
 
 Build the :App target with Bazel: 
 
-`bazel build :App`
+`bazel build //bazeltest:App`
 
 Run the :App target with Bazel: 
 
-`bazel run :App`
+`bazel run //bazeltest:App`
 
-You can do the same with :HelloServer to see an http4s server in action.
+You can do the same with //helloserver:HelloServer to see an http4s server in action.
 
 Package either target in a Docker image and then run with:
 
-`bazel run :AppImage` or `bazel run :HelloServerImage`
+`bazel run //bazeltest:AppImage` or `bazel run //helloserver:HelloServerImage`
 
 OR (recommended)
 

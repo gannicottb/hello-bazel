@@ -1,4 +1,7 @@
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_library")
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_binary")
+load("@io_bazel_rules_docker//scala:image.bzl", "scala_image")
+
 
 scala_library(
     name = "bazeltest",
@@ -15,4 +18,22 @@ scala_library(
         "@third_party//org/typelevel:cats_core",
         "@third_party//org/typelevel:cats_effect",
     ],
+)
+
+# Binary and Docker image for bazeltest.Main, which I'm calling "App" for some reason
+scala_binary(
+    name = "App",
+    main_class = "bazeltest.src.main.scala.bazeltest.Main",
+    scalacopts = [
+        "-language:higherKinds",
+    ],
+    deps = [
+        "//bazeltest",
+    ],
+)
+
+scala_image(
+    name = "AppImage",
+    main_class = "bazeltest.src.main.scala.bazeltest.Main",
+    deps = ["//bazeltest"],
 )

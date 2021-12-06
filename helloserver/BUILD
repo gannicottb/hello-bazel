@@ -1,4 +1,6 @@
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_library")
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_binary")
+load("@io_bazel_rules_docker//scala:image.bzl", "scala_image")
 
 scala_library(
     name = "helloserver",
@@ -18,5 +20,22 @@ scala_library(
         "@third_party//org/http4s:http4s_ember_client",
         "@third_party//org/http4s:http4s_ember_server",
         "@third_party//org/typelevel:cats_effect",
+    ],
+)
+
+# Binary and Docker image for helloserver
+scala_binary(
+    name = "HelloServer",
+    main_class = "helloserver.src.main.scala.com.ciphertrace.Main",
+    deps = [
+        "//helloserver",
+    ],
+)
+
+scala_image(
+    name = "HelloServerImage",
+    main_class = "helloserver.src.main.scala.com.ciphertrace.Main",
+    deps = [
+        "//helloserver",
     ],
 )
