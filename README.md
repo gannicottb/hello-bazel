@@ -7,6 +7,7 @@ Learn about how Bazel works, specifically for building Scala apps.
 [migrating to bazel](https://medium.com/wix-engineering/migrating-to-bazel-from-maven-or-gradle-5-crucial-questions-you-should-ask-yourself-f23ac6bca070)
 
 # TODO
+* Why does helloserver fail on my Mac?
 * Customize docker images (translate _some_ tweaks from existing Dockerfiles)
 * Push docker images to local repo/external repo
 * Determine the right approach for transitive dep declaration 
@@ -160,7 +161,7 @@ Which works, but IDEA of course doesn't know about it and will flag the code as 
 
 The default transitivity setting (runtimeDeps) in dependencies.yaml led to (imo) excessive tracking down of transitive deps.
 
-For example, if you needs cats-effect, you end up needing cats-core, cats-kernel, cats-kernel-effect, cats-effect-std, etc, all explicitly declared in dependencies and asked for in the app that wanted cats-effect. 
+For example, if you need cats-effect, you end up needing cats-core, cats-kernel, cats-kernel-effect, cats-effect-std, etc, all explicitly declared in dependencies and asked for in the app that wanted cats-effect. 
 
 This might have correctness benefits but it's a hard sell. Basically, bazel-deps will find the extra things we need, but with `transitivity: runtimeDeps` then it's impossible to make them available on the classpath without promoting them to an explicit include in two files (dependencies.yaml and BUILD)
 

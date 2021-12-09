@@ -25,7 +25,7 @@ scala_library(
 
 # Binary and Docker image for helloserver
 scala_binary(
-    name = "HelloServer",
+    name = "jar",
     main_class = "helloserver.src.main.scala.com.ciphertrace.Main",
     deps = [
         "//helloserver",
