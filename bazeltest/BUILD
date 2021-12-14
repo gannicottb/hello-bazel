@@ -5,7 +5,7 @@ load("@io_bazel_rules_docker//scala:image.bzl", "scala_image")
 
 scala_library(
     name = "bazeltest",
-    srcs = glob(["src/main/scala/bazeltest/*.scala"]),
+    srcs = glob(["src/main/scala/**/*.scala"]),
     plugins = [
         "@third_party//com/olegpy:better_monadic_for",
         "@third_party//org/typelevel:kind_projector_2_13_7",
@@ -23,7 +23,7 @@ scala_library(
 # Binary and Docker image for bazeltest.Main, which I'm calling "App" for some reason
 scala_binary(
     name = "App",
-    main_class = "bazeltest.src.main.scala.bazeltest.Main",
+    main_class = "bazeltest.Main",
     scalacopts = [
         "-language:higherKinds",
     ],
@@ -34,6 +34,6 @@ scala_binary(
 
 scala_image(
     name = "AppImage",
-    main_class = "bazeltest.src.main.scala.bazeltest.Main",
+    main_class = "bazeltest.Main",
     deps = ["//bazeltest"],
 )

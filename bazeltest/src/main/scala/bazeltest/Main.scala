@@ -1,4 +1,4 @@
-package bazeltest.src.main.scala.bazeltest
+package bazeltest
 
 import io.circe.syntax._
 import io.circe.generic.auto._
